@@ -46,14 +46,14 @@ Use "flexpool-cli [command] --help" for more information about a command.
 Just do `make uninstall`
 
 # Troubleshooting
-### Command not found
+## - Command not found
 ```
 bash: command not found: flexpool-cli
 ```
 Ensure that you have GOPATH & PATH variables set correctly.
 
 # FAQ
-## Where configuration is located?
+## - Where configuration is located?
 Linux: `$HOME/.config/flexpool/flexpool-cli/`
 
 macOS: `$HOME/Library/Application Support/flexpool/flexpool-cli`
