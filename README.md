@@ -1,11 +1,12 @@
 # flexpool-cli
+[![Build Status](https://travis-ci.org/flexpool/flexpool-cli.svg?branch=master)](https://travis-ci.org/flexpool/flexpool-cli)
 CLI tool that wraps **flexpool** API.
 > WARNING: This tool is in development and does not cover the the full flexpool API.
 
 ![flexpool-cli screenshot](https://i.imgur.com/vXLZ6ca.png)
 
 # Requirements
-* go (latest)
+* go (v1.13 or higher)
 
 # Install
 Install the tool:
