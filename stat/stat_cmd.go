@@ -24,6 +24,7 @@ var extraDetails bool
 
 var all bool
 
+var web bool
 
 // Init initializes the CLI command
 func Init() {
@@ -33,6 +34,7 @@ func Init() {
 
 	StatCmd.Flags().BoolVarP(&all, "all", "a", false, "Equals to -cdx")
 
+	StatCmd.Flags().BoolVarP(&web, "web", "w", false, "Open the dashboard in default browser")
 }
 
 // StatCmd is the `flexpool-cli stat` command
@@ -88,6 +90,10 @@ func statCmd(cmd *cobra.Command, args []string) {
 }
 
 func printStats(address common.Address) {
+	if web {
+		utils.OpenURL("https://flexpool.io/wallet/" + address.String())
+		return
+	}
 	fmt.Println("\033[H\033[2J\033[1;32m- \033[1;97m" + address.String() + "\033[0m")
 
 	minerStats, err := api.MinerStats(address.String())

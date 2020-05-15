@@ -2,6 +2,8 @@ package utils
 
 import (
 	"math"
+	"os/exec"
+	"runtime"
 
 	"github.com/guptarohit/asciigraph"
 )
@@ -40,4 +42,22 @@ func SiSlice(slice []float64) ([]float64, string) {
 func Chart(series []float64, caption string, unit string) string {
 	newSeries, siChar := SiSlice(series)
 	return asciigraph.Plot(newSeries, asciigraph.Height(5), asciigraph.Caption(caption+" ("+siChar+")"))
+}
+
+// OpenURL opens the specified URL in the default browser of the user.
+func OpenURL(url string) error {
+	var cmd string
+	var args []string
+
+	switch runtime.GOOS {
+	case "windows":
+		cmd = "cmd"
+		args = []string{"/c", "start"}
+	case "darwin":
+		cmd = "open"
+	default: // "linux", "freebsd", "openbsd", "netbsd"
+		cmd = "xdg-open"
+	}
+	args = append(args, url)
+	return exec.Command(cmd, args...).Start()
 }
