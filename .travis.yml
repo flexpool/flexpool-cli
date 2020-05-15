@@ -9,5 +9,8 @@ go:
 - 1.14.x
 - tip
 
+before:
+- "go get -u -v"
+
 build:
 - "make"
