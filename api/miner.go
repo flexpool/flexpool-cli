@@ -92,6 +92,20 @@ type jsonResponseBalance struct {
 	Error  error            `json:"error"`
 }
 
+// MinerDetail is a miner details API method response struct
+type MinerDetail struct {
+	MinPayoutThreshold   types.JSONBigInt `json:"min_payout_threshold"`
+	PoolDonation         float64          `json:"pool_donation"`
+	CensoredEmail        string           `json:"censored_email"`
+	CensoredIP           string           `json:"censored_ip"`
+	FirstJoinedTimestamp int64            `json:"first_joined"`
+}
+
+type jsonResponseDetail struct {
+	Result MinerDetail `json:"result"`
+	Error  error       `json:"error"`
+}
+
 // APIEndpoint is a v1 flexpool API endpoint
 var APIEndpoint = "https://flexpool.io/api/v1"
 
@@ -168,6 +182,19 @@ func MinerChart(address string) ([]FullStatsWithTimestamp, error) {
 	}
 	respBytes, _ := ioutil.ReadAll(resp.Body)
 	var parsed jsonResponseChart
+	err = json.Unmarshal(respBytes, &parsed)
+
+	return parsed.Result, err
+}
+
+// MinerDetails returns the miner's detalis
+func MinerDetails(address string) (MinerDetail, error) {
+	resp, err := http.Get(APIEndpoint + "/miner/" + address + "/details")
+	if err != nil {
+		return MinerDetail{}, err
+	}
+	respBytes, _ := ioutil.ReadAll(resp.Body)
+	var parsed jsonResponseDetail
 	err = json.Unmarshal(respBytes, &parsed)
 
 	return parsed.Result, err

@@ -8,6 +8,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/dustin/go-humanize"
 	"github.com/ethereum/go-ethereum/common"
@@ -18,10 +19,20 @@ import (
 )
 
 var charts bool
+var detail bool
+var extraDetails bool
+
+var all bool
+
 
 // Init initializes the CLI command
 func Init() {
 	StatCmd.Flags().BoolVarP(&charts, "charts", "c", false, "Show charts")
+	StatCmd.Flags().BoolVarP(&detail, "details", "d", false, "Show address details")
+	StatCmd.Flags().BoolVarP(&extraDetails, "extra-details", "x", false, "Show censored Email and IP")
+
+	StatCmd.Flags().BoolVarP(&all, "all", "a", false, "Equals to -cdx")
+
 }
 
 // StatCmd is the `flexpool-cli stat` command
@@ -33,6 +44,11 @@ var StatCmd = &cobra.Command{
 }
 
 func statCmd(cmd *cobra.Command, args []string) {
+	if all {
+		charts = true
+		detail = true
+		extraDetails = true
+	}
 	var addr common.Address
 	if len(args) > 0 {
 		if !common.IsHexAddress(args[0]) {
@@ -78,6 +94,24 @@ func printStats(address common.Address) {
 	if err != nil {
 		fmt.Println("\033[1;31mERROR:", err.Error())
 		os.Exit(1)
+	}
+
+	if detail {
+		fmt.Println("\n\033[1;97mDetails:")
+		details, _ := api.MinerDetails(address.String())
+		fmt.Println(" \033[1;97mPayout Limit: " + "\033[1;32m" + fmt.Sprintf("%v", utils.WeiToEther(&details.MinPayoutThreshold.Int)) + " ETH")
+		if details.PoolDonation*100 >= 0.5 {
+			fmt.Println(" \033[1;97mPool Donation: " + "\033[1;32m" + fmt.Sprintf("%v", details.PoolDonation*100) + "%")
+		} else {
+			fmt.Println(" \033[1;97mPool Donation: " + "\033[1;31m" + fmt.Sprintf("%v", details.PoolDonation*100) + "%" + " (CONSIDER CHANGING IT)")
+		}
+
+		if extraDetails {
+			fmt.Println(" \033[1;97mEmail " + "\033[1;32m" + details.CensoredEmail)
+			fmt.Println(" \033[1;97mIP " + "\033[1;32m" + details.CensoredIP)
+		}
+
+		fmt.Println(" \033[1;97mFirst Joined " + "\033[1;32m" + humanize.Time(time.Unix(details.FirstJoinedTimestamp, 0)))
 	}
 
 	fmt.Println("\n\033[1;97mStats:")
