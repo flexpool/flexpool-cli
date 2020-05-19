@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/flexpool/flexpool-cli.svg?branch=master)](https://travis-ci.org/flexpool/flexpool-cli)
 
 CLI tool that wraps **flexpool** API.
-> WARNING: This tool is in development and does not cover the the full flexpool API.
+> WARNING: This tool is in development and does not cover the the flexpool API fully.
 
 ![flexpool-cli screenshot](https://i.imgur.com/vXLZ6ca.png)
 
