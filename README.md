@@ -1,4 +1,7 @@
 # flexpool-cli
+
+## WARNING: This repository is archived and is no longer maintained
+
 [![Build Status](https://travis-ci.org/flexpool/flexpool-cli.svg?branch=master)](https://travis-ci.org/flexpool/flexpool-cli)
 
 CLI tool that wraps **flexpool** API.
